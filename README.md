@@ -1,2 +1,2 @@
 # map_viz
-Scripts that cover (animated) map visualizations. In the coming month, I'll be adding scripts of some of the visuals I've been posting on Reddit.
+Scripts that cover (animated) map visualizations. Many of these have been posted through my [Reddit account](https://www.reddit.com/user/tochmaarweerpizza/posts/)
