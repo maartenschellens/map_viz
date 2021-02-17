@@ -6,6 +6,9 @@ import geopandas as gpd
 import folium
 from streamlit_folium import folium_static
 import altair as alt
+from state import count_sessions
+
+count_sessions()
 
 st.set_page_config(
     page_title="Rijksmonumentdichtheid van Nederland",
@@ -44,7 +47,7 @@ function = st.sidebar.radio(
 st.sidebar.write("### Selecteer classificatiecategorie")
 label_classification = st.sidebar.radio(
     "",
-    ('machten van 10', 'gelijke intervals'))
+    ('kwartielen', 'machten van 10', 'gelijke intervals'))
 
 if categorie == 'Alles':
     selected_columns = column_mapping_df['column_mapping']
@@ -60,7 +63,9 @@ monuments_df['aantal_monumenten_binnen_categorie'] = monuments_df[selected_colum
 if function == 'afgerond aantal per 100.000 inwoners':
     monuments_df['aantal_monumenten_binnen_categorie'] = np.round(monuments_df['aantal_monumenten_binnen_categorie'] / monuments_df['TotaleBevolking_1'] * 100000, 0)
 
-if label_classification == 'gelijke intervals':
+if label_classification == 'kwartielen':
+    scale = np.insert(np.quantile(monuments_df['aantal_monumenten_binnen_categorie'], q = [.25, .5, .75, 1]), 0, 0)
+elif label_classification == 'gelijke intervals':
     scale = np.linspace(0, monuments_df['aantal_monumenten_binnen_categorie'].max(), 5)
 else:
     n_digits = len(str(int(monuments_df['aantal_monumenten_binnen_categorie'].max())))
